@@ -1,0 +1,1532 @@
+@font-face {
+  font-family: "Minecraft";
+  src: url("../assets/minecraft-textures/Minecraft.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --world-void: #070908;
+  --world-blackstone: #101313;
+  --world-panel: #171b1a;
+  --world-panel-strong: #202421;
+  --world-text: #f4ead2;
+  --world-muted: #b9b3a7;
+  --world-parchment: #ead7ad;
+  --world-moss: #7fa64d;
+  --world-amber: #e5b654;
+  --world-cyan: #65d5e2;
+  --world-violet: #9b6bdb;
+  --world-redstone: #d45a42;
+  --world-line: rgba(244, 234, 210, 0.2);
+  --font-minecraft: "Minecraft", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--world-void);
+  color: var(--world-text);
+  font-family: var(--font-body);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}
+
+.world-archive {
+  min-height: 100vh;
+  overflow-x: clip;
+  background:
+    linear-gradient(180deg, rgba(7, 9, 8, 0.4), rgba(7, 9, 8, 1)),
+    var(--world-void);
+}
+
+.world-container {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.world-section {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 120px 0 72px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.world-page-motion {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.world-section__backdrop,
+.world-section__shade,
+.world-section__scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.world-section__backdrop {
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.95) contrast(1.05);
+  transform: scale(1.015);
+}
+
+.world-section__shade {
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(7, 9, 8, 0.86) 0%, rgba(7, 9, 8, 0.62) 38%, rgba(7, 9, 8, 0.24) 70%),
+    linear-gradient(180deg, rgba(7, 9, 8, 0.38) 0%, rgba(7, 9, 8, 0.18) 46%, rgba(7, 9, 8, 0.9) 100%);
+}
+
+.world-section__scanline {
+  z-index: -1;
+  opacity: 0.08;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 100% 4px;
+}
+
+.world-topbar {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  width: min(1180px, calc(100% - 28px));
+  padding: 6px;
+  background:
+    linear-gradient(rgba(7, 9, 9, 0.82), rgba(7, 9, 9, 0.9)),
+    url("../assets/minecraft-textures/block/deepslate_tiles.png");
+  background-size: auto, 32px 32px;
+  border: 2px solid #747877;
+  outline: 2px solid #090b0b;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.18),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.72),
+    0 4px 0 #020303,
+    0 12px 28px rgba(0, 0, 0, 0.52);
+  image-rendering: pixelated;
+  transform: translateX(-50%);
+}
+
+.world-mark,
+.world-topbar__nav button,
+.sound-toggle,
+.icon-button,
+.mc-button {
+  border-radius: 0;
+}
+
+.world-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 12px 4px 4px;
+  color: var(--world-text);
+  background: rgba(10, 12, 12, 0.88);
+  border: 2px solid #555a58;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.14),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.68);
+  text-decoration: none;
+  justify-self: start;
+  transition: filter 120ms ease, transform 120ms ease;
+}
+
+.world-mark__slot {
+  display: grid;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  background: url("../assets/minecraft-textures/gui/sprites/container/slot.png") center / 100% 100% no-repeat;
+}
+
+.world-mark__slot img {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
+}
+
+.world-mark__name,
+.world-topbar__nav button span,
+.world-kicker,
+.mc-button,
+.rarity-gem {
+  font-family: var(--font-minecraft);
+}
+
+.world-mark__name,
+.world-topbar__nav button span {
+  text-shadow: 2px 2px 0 #171717;
+}
+
+@media (hover: hover) {
+  .world-mark:hover {
+    filter: brightness(1.14);
+    transform: translateY(-1px);
+  }
+}
+
+.world-topbar__nav {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 3px;
+  background: rgba(3, 5, 5, 0.78);
+  border: 2px solid #272b2a;
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.78),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.world-topbar__nav button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 92px;
+  min-height: 40px;
+  padding: 0 12px;
+  overflow: visible;
+  color: #dedede;
+  background-color: #777;
+  background-image: url("../assets/minecraft-textures/gui/sprites/widget/button.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 0.83rem;
+  line-height: 1;
+  text-shadow: 2px 2px 0 #202020;
+  transition: filter 100ms ease, transform 100ms ease;
+}
+
+.world-topbar__nav button img {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, 0.62));
+}
+
+@media (hover: hover) {
+  .world-topbar__nav button:hover {
+    color: #fff;
+    background-image: url("../assets/minecraft-textures/gui/sprites/widget/button_highlighted.png");
+    filter: brightness(1.14);
+    transform: translateY(-1px);
+  }
+}
+
+.world-topbar__nav button.is-active {
+  z-index: 1;
+  color: #fff8da;
+  background-image: url("../assets/minecraft-textures/gui/sprites/widget/button_highlighted.png");
+  outline: 2px solid #efc95e;
+  outline-offset: -2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 205, 0.68),
+    0 0 10px rgba(229, 182, 84, 0.24);
+}
+
+.world-topbar__nav button.is-active::after {
+  position: absolute;
+  right: 6px;
+  bottom: 3px;
+  left: 6px;
+  height: 3px;
+  background: #79b94a;
+  box-shadow: 0 1px 0 #233d19, 0 0 5px rgba(121, 185, 74, 0.78);
+  content: "";
+}
+
+.world-mark:active,
+.world-topbar__nav button:active,
+.sound-toggle:active {
+  transform: translateY(2px);
+}
+
+.world-mark:focus-visible,
+.world-topbar__nav button:focus-visible,
+.sound-toggle:focus-visible {
+  z-index: 3;
+  outline: 3px solid var(--world-cyan);
+  outline-offset: 3px;
+}
+
+.world-topbar__utility {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: end;
+}
+
+.sound-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #dedede;
+  background-color: #777;
+  background-image: url("../assets/minecraft-textures/gui/sprites/container/slot.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border: 0;
+  transition: color 100ms ease, filter 100ms ease, transform 100ms ease;
+}
+
+.sound-toggle[aria-pressed="true"] {
+  color: var(--world-cyan);
+  filter: brightness(1.18) drop-shadow(0 0 4px rgba(101, 213, 226, 0.52));
+}
+
+@media (hover: hover) {
+  .sound-toggle:hover {
+    color: var(--world-cyan);
+    filter: brightness(1.18) drop-shadow(0 0 4px rgba(101, 213, 226, 0.52));
+  }
+}
+
+.world-hero {
+  display: grid;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-bottom: 72px;
+}
+
+.world-hero .world-section__backdrop {
+  animation: hero-breathe 18s ease-in-out infinite alternate;
+}
+
+.world-hero__content {
+  display: grid;
+  justify-items: start;
+  max-width: 760px;
+  text-align: left;
+}
+
+.world-kicker {
+  margin: 0 0 14px;
+  color: var(--world-cyan);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  max-width: 720px;
+  color: var(--world-parchment);
+  font-family: var(--font-minecraft);
+  font-size: clamp(3.2rem, 8vw, 6.8rem);
+  letter-spacing: -0.025em;
+  line-height: 0.95;
+  text-shadow: 0 7px 0 rgba(0, 0, 0, 0.6), 0 0 22px rgba(229, 182, 84, 0.18);
+}
+
+h2 {
+  color: var(--world-parchment);
+  font-family: var(--font-minecraft);
+  font-size: clamp(2rem, 4.2vw, 4rem);
+  line-height: 1.05;
+  text-shadow: 0 5px 0 rgba(0, 0, 0, 0.46);
+}
+
+.section-title {
+  color: var(--world-parchment);
+  font-family: var(--font-minecraft);
+  font-size: clamp(2rem, 4.2vw, 4rem);
+  letter-spacing: 0;
+  line-height: 1.05;
+  text-shadow: 0 5px 0 rgba(0, 0, 0, 0.46);
+}
+
+.section-title:focus,
+.world-hero h1:focus {
+  outline: none;
+}
+
+h3 {
+  color: var(--world-text);
+  font-family: var(--font-minecraft);
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  line-height: 1.12;
+}
+
+h4 {
+  margin: 0 0 10px;
+  color: var(--world-amber);
+  font-family: var(--font-minecraft);
+  font-size: 0.9rem;
+}
+
+.world-hero__lead {
+  max-width: 620px;
+  margin: 22px 0 0;
+  color: var(--world-text);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.45;
+}
+
+.world-hero__detail,
+.section-heading p,
+.station-panel p,
+.portal-copy p,
+.project-chest p,
+.project-chest dd,
+.project-chest li {
+  color: var(--world-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.world-hero__detail {
+  max-width: 650px;
+  margin: 16px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid rgba(101, 213, 226, 0.5);
+}
+
+.world-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.mc-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  color: var(--world-text);
+  background: linear-gradient(180deg, #323731, #161a17);
+  border: 2px solid rgba(244, 234, 210, 0.25);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.1), 0 6px 0 rgba(0, 0, 0, 0.42);
+  text-decoration: none;
+  transition: transform 150ms ease, border-color 150ms ease, filter 150ms ease;
+}
+
+.mc-button:hover,
+.mc-button:focus-visible {
+  border-color: rgba(101, 213, 226, 0.7);
+  transform: translateY(-1px);
+}
+
+.mc-button--primary {
+  color: #07100c;
+  background: linear-gradient(180deg, #ebc768, var(--world-amber));
+  border-color: rgba(255, 236, 170, 0.82);
+}
+
+.mc-button--primary:hover,
+.mc-button--primary:focus-visible {
+  filter: brightness(1.08);
+}
+
+@keyframes hero-breathe {
+  from {
+    transform: scale(1.015) translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: scale(1.045) translate3d(-0.35%, -0.25%, 0);
+  }
+}
+
+.section-heading {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+
+.section-heading p:last-child {
+  max-width: 680px;
+  margin: 14px 0 0;
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.archive-frame {
+  position: relative;
+  display: grid;
+  grid-template-rows: 118px auto;
+  min-width: 0;
+  min-height: 210px;
+  padding: 12px;
+  color: var(--world-text);
+  background:
+    linear-gradient(180deg, rgba(32, 36, 33, 0.92), rgba(12, 15, 14, 0.95)),
+    var(--world-panel);
+  border: 2px solid rgba(234, 215, 173, 0.24);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+
+.archive-frame:hover,
+.archive-frame:focus-visible,
+.archive-frame.is-open {
+  border-color: var(--world-amber);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.5), 0 0 24px rgba(229, 182, 84, 0.2);
+  transform: translateY(-2px);
+}
+
+.archive-frame__image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.archive-frame__wood {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+.archive-frame__item {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 5px 0 rgba(0, 0, 0, 0.48));
+}
+
+.archive-frame__meta {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.archive-frame__meta span {
+  color: var(--world-parchment);
+  font-family: var(--font-minecraft);
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.archive-frame__meta small {
+  color: var(--world-muted);
+  line-height: 1.4;
+}
+
+.rarity-epic {
+  --rarity-color: var(--world-violet);
+}
+
+.rarity-rare {
+  --rarity-color: var(--world-cyan);
+}
+
+.rarity-uncommon {
+  --rarity-color: var(--world-moss);
+}
+
+.rarity-common {
+  --rarity-color: var(--world-muted);
+}
+
+.archive-frame.rarity-epic,
+.archive-frame.rarity-rare,
+.archive-frame.rarity-uncommon,
+.archive-frame.rarity-common {
+  border-bottom-color: var(--rarity-color);
+}
+
+.project-chest-anchor {
+  scroll-margin-top: 96px;
+}
+
+.project-chest {
+  margin-top: 28px;
+  background:
+    linear-gradient(180deg, rgba(54, 37, 19, 0.96), rgba(21, 15, 10, 0.98)),
+    #19120c;
+  border: 3px solid #7a5424;
+  box-shadow: inset 0 0 0 2px rgba(229, 182, 84, 0.22), 0 16px 0 rgba(0, 0, 0, 0.46);
+}
+
+.project-chest__lid {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 3px solid #7a5424;
+  background: rgba(229, 182, 84, 0.08);
+}
+
+.project-chest__tools {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: var(--world-text);
+  background: rgba(16, 19, 19, 0.72);
+  border: 2px solid rgba(244, 234, 210, 0.22);
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  border-color: var(--world-cyan);
+  color: var(--world-cyan);
+}
+
+.project-chest__body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.project-chest__artifact {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 16px;
+  padding: 18px;
+  background: rgba(12, 9, 6, 0.5);
+  border: 2px solid rgba(234, 215, 173, 0.2);
+}
+
+.project-chest__artifact img {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 9px 0 rgba(0, 0, 0, 0.5));
+}
+
+.project-chest__artifact p {
+  margin: 0;
+  text-align: center;
+}
+
+.rarity-gem {
+  justify-self: stretch;
+  padding: 7px 9px;
+  color: var(--rarity-color);
+  border: 1px solid color-mix(in srgb, var(--rarity-color) 60%, transparent);
+  background: color-mix(in srgb, var(--rarity-color) 12%, transparent);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.project-chest__content {
+  min-width: 0;
+}
+
+.chest-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.chest-tabs button {
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--world-muted);
+  background: rgba(7, 9, 8, 0.45);
+  border: 1px solid rgba(244, 234, 210, 0.18);
+}
+
+.chest-tabs button.is-active,
+.chest-tabs button:hover,
+.chest-tabs button:focus-visible {
+  color: var(--world-text);
+  border-color: rgba(229, 182, 84, 0.72);
+  background: rgba(229, 182, 84, 0.14);
+}
+
+.chest-tab-panel {
+  min-height: 280px;
+  padding: 18px;
+  background: rgba(7, 9, 8, 0.44);
+  border: 1px solid rgba(244, 234, 210, 0.16);
+}
+
+.chest-prose p {
+  margin: 0 0 18px;
+}
+
+.chest-prose dl {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.chest-prose div {
+  display: grid;
+  gap: 5px;
+}
+
+.chest-prose dt {
+  color: var(--world-amber);
+  font-family: var(--font-minecraft);
+  font-size: 0.82rem;
+}
+
+.chest-prose dd {
+  margin: 0;
+}
+
+.ingredient-list,
+.chest-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredient-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ingredient-list li,
+.chest-list li {
+  padding: 11px 12px;
+  background: rgba(16, 19, 19, 0.66);
+  border: 1px solid rgba(244, 234, 210, 0.14);
+}
+
+.ingredient-list li::before,
+.chest-list li::before {
+  color: var(--world-moss);
+  content: "+ ";
+}
+
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.project-links {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+  color: var(--world-cyan);
+  background: rgba(101, 213, 226, 0.1);
+  border: 1px solid rgba(101, 213, 226, 0.36);
+  text-decoration: none;
+}
+
+.crafting-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.65fr);
+  grid-template-areas:
+    "heading heading"
+    "book table";
+  gap: 18px;
+  align-items: start;
+}
+
+.crafting-layout > .section-heading {
+  grid-area: heading;
+  margin-bottom: 0;
+}
+
+.recipe-book {
+  grid-area: book;
+  display: grid;
+  gap: 14px;
+  padding: 18px 20px;
+  background:
+    linear-gradient(90deg, rgba(229, 182, 84, 0.08), transparent 42%),
+    rgba(16, 19, 19, 0.9);
+  border: 2px solid rgba(234, 215, 173, 0.24);
+  border-left-color: rgba(229, 182, 84, 0.72);
+  box-shadow: 0 9px 0 rgba(0, 0, 0, 0.38);
+}
+
+.recipe-book__heading {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.recipe-book__heading .world-kicker {
+  margin-bottom: 5px;
+  color: var(--world-amber);
+}
+
+.recipe-book__heading h3 {
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+}
+
+.recipe-book__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  color: #22190c;
+  background: var(--world-parchment);
+  border: 2px solid rgba(255, 240, 190, 0.65);
+  box-shadow: inset 0 -4px 0 rgba(84, 57, 20, 0.25);
+}
+
+.recipe-book__heading > button {
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--world-muted);
+  background: rgba(7, 9, 8, 0.54);
+  border: 1px solid rgba(244, 234, 210, 0.24);
+  font-family: var(--font-minecraft);
+  font-size: 0.72rem;
+}
+
+.recipe-book__heading > button:hover:not(:disabled),
+.recipe-book__heading > button:focus-visible:not(:disabled) {
+  color: var(--world-text);
+  border-color: rgba(101, 213, 226, 0.55);
+}
+
+.recipe-book__heading > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.recipe-book__hint {
+  max-width: 780px;
+  margin: 0;
+  color: var(--world-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.recipe-book__results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: stretch;
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-color: rgba(229, 182, 84, 0.55) rgba(7, 9, 8, 0.5);
+}
+
+.recipe-book__results button {
+  display: grid;
+  grid-template-columns: 32px auto;
+  grid-template-rows: auto auto;
+  column-gap: 9px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+  padding: 7px 11px;
+  color: var(--world-text);
+  background: rgba(7, 9, 8, 0.58);
+  border: 1px solid rgba(244, 234, 210, 0.2);
+  text-align: left;
+}
+
+.recipe-book__results button:hover,
+.recipe-book__results button:focus-visible {
+  background: rgba(127, 166, 77, 0.14);
+  border-color: rgba(127, 166, 77, 0.6);
+}
+
+.recipe-book__results img {
+  grid-row: 1 / 3;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.recipe-book__results span {
+  align-self: end;
+  font-family: var(--font-minecraft);
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+
+.recipe-book__results small {
+  align-self: start;
+  color: var(--world-muted);
+  font-size: 0.7rem;
+}
+
+.recipe-book__results .recipe-book__more {
+  display: block;
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 10px;
+  color: var(--world-amber);
+  background: rgba(229, 182, 84, 0.06);
+  border-color: rgba(229, 182, 84, 0.28);
+  font-family: var(--font-minecraft);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.crafting-table {
+  grid-area: table;
+  display: grid;
+  grid-template-columns: minmax(290px, 1fr) 54px minmax(170px, 220px);
+  gap: 14px;
+  align-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(rgba(16, 19, 19, 0.92), rgba(16, 19, 19, 0.92)),
+    var(--craft-texture);
+  border: 3px solid rgba(234, 215, 173, 0.24);
+  box-shadow: 0 14px 0 rgba(0, 0, 0, 0.44);
+}
+
+.craft-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.craft-slot,
+.craft-result {
+  color: var(--world-text);
+  background: rgba(7, 9, 8, 0.7);
+  border: 2px solid rgba(244, 234, 210, 0.18);
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.42);
+}
+
+.craft-slot {
+  position: relative;
+  display: grid;
+  grid-template-rows: 38px auto;
+  gap: 6px;
+  justify-items: center;
+  min-height: 82px;
+  padding: 8px 7px;
+}
+
+.craft-slot__count {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 5px;
+  color: #07100c;
+  background: var(--world-amber);
+  border: 1px solid rgba(255, 239, 180, 0.72);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.42);
+  font-family: var(--font-minecraft);
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.craft-slot:hover,
+.craft-slot:focus-visible,
+.craft-slot.is-selected,
+.craft-result:not(.craft-result--empty):hover,
+.craft-result:not(.craft-result--empty):focus-visible {
+  border-color: var(--world-moss);
+  background: rgba(127, 166, 77, 0.18);
+}
+
+.craft-slot.is-selected {
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.42),
+    0 0 0 2px rgba(127, 166, 77, 0.28),
+    0 0 22px rgba(127, 166, 77, 0.2);
+}
+
+.craft-slot img,
+.craft-result img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.craft-slot span,
+.craft-result span,
+.craft-result strong,
+.craft-result small {
+  display: block;
+  text-align: center;
+}
+
+.craft-slot span {
+  color: var(--world-muted);
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
+.craft-arrow {
+  width: 100%;
+  height: 20px;
+  background:
+    linear-gradient(90deg, transparent 0 20%, var(--world-amber) 20% 74%, transparent 74%),
+    linear-gradient(45deg, transparent 0 48%, var(--world-amber) 48% 65%, transparent 65%);
+  filter: drop-shadow(0 5px 0 rgba(0, 0, 0, 0.45));
+}
+
+.craft-result {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  min-height: 206px;
+  padding: 14px;
+}
+
+.craft-result span,
+.craft-result strong {
+  font-family: var(--font-minecraft);
+}
+
+.craft-result strong {
+  color: var(--world-parchment);
+  line-height: 1.25;
+}
+
+.craft-result small {
+  color: var(--world-muted);
+}
+
+.craft-result--empty {
+  cursor: default;
+  border-style: dashed;
+  background: rgba(7, 9, 8, 0.5);
+}
+
+.craft-result__placeholder {
+  color: var(--world-muted);
+  opacity: 0.48;
+}
+
+.rail-console {
+  display: grid;
+  gap: 26px;
+  padding: 24px;
+  background: rgba(16, 19, 19, 0.8);
+  border: 2px solid rgba(244, 234, 210, 0.2);
+  box-shadow: 0 14px 0 rgba(0, 0, 0, 0.42);
+}
+
+.rail-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  min-height: 92px;
+  align-items: center;
+}
+
+.rail-track::before,
+.rail-track::after {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 50%;
+  height: 10px;
+  background: rgba(234, 215, 173, 0.26);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.rail-track::after {
+  right: auto;
+  width: var(--rail-progress);
+  background: linear-gradient(90deg, var(--world-moss), var(--world-cyan));
+}
+
+.rail-track__cart {
+  position: absolute;
+  left: clamp(4%, var(--rail-progress), 92%);
+  top: 0;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  image-rendering: pixelated;
+  transform: translateX(-50%);
+  transition: left 240ms ease;
+}
+
+.rail-track button {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto;
+  color: var(--world-text);
+  background: rgba(7, 9, 8, 0.86);
+  border: 2px solid rgba(244, 234, 210, 0.28);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.45);
+}
+
+.rail-track button.is-active {
+  color: #07100c;
+  background: var(--world-amber);
+  border-color: #ffe7a0;
+}
+
+.station-panel {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 340px);
+  gap: 24px;
+  align-items: start;
+}
+
+.station-panel p {
+  margin: 14px 0 0;
+}
+
+.station-projects {
+  display: grid;
+  gap: 10px;
+}
+
+.station-projects button {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: center;
+  min-height: 46px;
+  padding: 8px 10px;
+  color: var(--world-text);
+  background: rgba(7, 9, 8, 0.56);
+  border: 1px solid rgba(244, 234, 210, 0.17);
+  text-align: left;
+}
+
+.station-projects button:hover,
+.station-projects button:focus-visible {
+  border-color: var(--world-cyan);
+}
+
+.station-projects img {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+}
+
+.portal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: 34px;
+  align-items: center;
+}
+
+.portal-copy {
+  max-width: 720px;
+}
+
+.portal-copy p {
+  max-width: 640px;
+  margin: 18px 0 0;
+}
+
+.portal-ledger {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  background: rgba(7, 9, 8, 0.76);
+  border: 2px solid rgba(155, 107, 219, 0.45);
+  box-shadow: 0 0 34px rgba(155, 107, 219, 0.15);
+}
+
+.portal-ledger div {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 54px;
+  padding: 12px;
+  background: rgba(155, 107, 219, 0.12);
+  border: 1px solid rgba(155, 107, 219, 0.28);
+}
+
+.portal-ledger span {
+  color: var(--world-muted);
+}
+
+.portal-ledger strong {
+  color: var(--world-parchment);
+  font-family: var(--font-minecraft);
+}
+
+.prefers-reduced-motion *,
+.prefers-reduced-motion *::before,
+.prefers-reduced-motion *::after {
+  scroll-behavior: auto !important;
+  transition-duration: 0.001ms !important;
+  animation-duration: 0.001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-archive *,
+  .world-archive *::before,
+  .world-archive *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+
+  .world-hero .world-section__backdrop {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 1040px) {
+  .archive-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .project-chest__body,
+  .station-panel,
+  .portal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .project-chest__artifact {
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+  }
+
+  .project-chest__artifact p {
+    text-align: left;
+  }
+
+  .crafting-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "heading"
+      "book"
+      "table";
+  }
+
+  .crafting-table {
+    grid-template-columns: 1fr;
+  }
+
+  .craft-arrow {
+    width: 70px;
+    margin: 0 auto;
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .world-section {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: calc(140px + env(safe-area-inset-top)) 0 64px;
+  }
+
+  .world-hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-bottom: 64px;
+  }
+
+  .world-container {
+    width: min(100% - 22px, 1180px);
+  }
+
+  .world-topbar {
+    top: calc(8px + env(safe-area-inset-top));
+    right: max(8px, env(safe-area-inset-right));
+    left: max(8px, env(safe-area-inset-left));
+    width: auto;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "brand utility"
+      "nav nav";
+    gap: 8px;
+    transform: none;
+  }
+
+  .world-topbar__nav {
+    grid-area: nav;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+  }
+
+  .world-topbar__nav button {
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    min-height: 48px;
+    padding: 3px 2px 4px;
+    font-size: clamp(0.64rem, 2.65vw, 0.76rem);
+  }
+
+  .world-topbar__nav button img {
+    width: 19px;
+    height: 19px;
+    flex-basis: 19px;
+  }
+
+  .world-mark {
+    grid-area: brand;
+    min-width: 0;
+  }
+
+  .world-topbar__utility {
+    grid-area: utility;
+  }
+
+  .world-mark__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  h1 {
+    max-width: 100%;
+    font-size: clamp(2.45rem, 15vw, 3.7rem);
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 10vw, 2.8rem);
+  }
+
+  .world-section__shade {
+    background:
+      linear-gradient(180deg, rgba(7, 9, 8, 0.38), rgba(7, 9, 8, 0.86)),
+      linear-gradient(90deg, rgba(7, 9, 8, 0.88), rgba(7, 9, 8, 0.28));
+  }
+
+  .world-hero__content,
+  .world-hero__detail,
+  .world-hero__lead {
+    max-width: 100%;
+  }
+
+  .archive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .archive-frame {
+    grid-template-rows: 92px auto;
+    min-height: 182px;
+    padding: 10px;
+  }
+
+  .archive-frame__wood {
+    width: 74px;
+    height: 74px;
+  }
+
+  .archive-frame__item {
+    width: 42px;
+    height: 42px;
+  }
+
+  .archive-frame__meta span {
+    font-size: 0.78rem;
+  }
+
+  .archive-frame__meta small {
+    font-size: 0.76rem;
+  }
+
+  .project-chest {
+    margin-left: -11px;
+    margin-right: -11px;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .project-chest-anchor {
+    scroll-margin-top: calc(124px + env(safe-area-inset-top));
+  }
+
+  .project-chest__lid,
+  .project-chest__body {
+    padding: 14px;
+  }
+
+  .project-chest__artifact {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .project-chest__artifact p {
+    text-align: center;
+  }
+
+  .source-grid,
+  .ingredient-list {
+    grid-template-columns: 1fr;
+  }
+
+  .crafting-table {
+    padding: 14px;
+  }
+
+  .recipe-book {
+    padding: 14px;
+  }
+
+  .recipe-book__results button {
+    flex: 1 1 180px;
+  }
+
+  .craft-grid {
+    gap: 8px;
+  }
+
+  .craft-slot {
+    min-height: 96px;
+  }
+
+  .rail-console {
+    padding: 14px;
+  }
+
+  .rail-track {
+    grid-template-columns: repeat(3, 1fr);
+    min-height: 152px;
+  }
+
+  .rail-track::before,
+  .rail-track::after,
+  .rail-track__cart {
+    display: none;
+  }
+
+  .portal-ledger div {
+    grid-template-columns: 28px 1fr;
+  }
+
+  .portal-ledger strong {
+    grid-column: 2;
+  }
+
+}
+
+@media (max-width: 420px) {
+  .world-section {
+    padding-top: calc(190px + env(safe-area-inset-top));
+  }
+
+  .world-topbar__nav {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .world-topbar__nav button {
+    grid-column: span 2;
+    flex-direction: row;
+    min-height: 42px;
+    font-size: 0.68rem;
+  }
+
+  .world-topbar__nav button:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .world-topbar__nav button:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+
+  .archive-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .world-actions,
+  .project-links {
+    flex-direction: column;
+  }
+
+  .mc-button,
+  .project-links a {
+    width: 100%;
+  }
+
+  .project-chest__lid {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .recipe-book__heading {
+    grid-template-columns: auto 1fr;
+  }
+
+  .recipe-book__heading > button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .recipe-book__results button {
+    flex-basis: 100%;
+  }
+}
