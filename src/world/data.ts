@@ -327,47 +327,47 @@ export const projects: WorldProject[] = [
     githubUrl: "https://github.com/Harshpreet1729/BudgetTracker",
   },
   {
-    id: "world-archive",
-    name: "Minecraft World Archive",
-    category: "Portfolio experience",
+    id: "endpoint",
+    name: "Endpoint",
+    category: "Webhook delivery platform",
     rarity: "epic",
-    icon: "compass",
+    icon: "redstone",
     summary:
-      "This redesigned React/Vite portfolio: a route-based Minecraft archive with generated voxel environments, item-frame projects, chests, crafting, rail, and portal rooms.",
+      "A Django REST Framework service that accepts events, queues signed webhook deliveries through Celery and Redis, retries failures, and tracks every delivery attempt.",
     problem:
-      "A portfolio can show taste and technical judgement by presenting projects as explorable systems instead of plain cards.",
+      "Reliable webhook delivery needs authentication, tamper-resistant payloads, background processing, retry control, and a clear record of failures.",
     role:
-      "Frontend architect translating repo audits into source-backed data, responsive UI, animations, generated assets, and local progress state.",
+      "Backend developer designing the Django data model, authenticated REST endpoints, HMAC signing, Celery delivery workers, retry flow, and production service layout.",
     analogy:
-      "The whole portfolio is a mountain base: item frames open project chests, skills combine on a crafting table, milestones ride a rail, and links leave through a portal.",
-    ingredients: ["React", "TypeScript", "Vite", "Framer Motion", "Minecraft textures", "Generated bitmap art"],
+      "A redstone dispatch station: each event enters the queue, gets sealed with a secret signature, and keeps firing through timed repeaters until it arrives or reaches the dead-letter chest.",
+    ingredients: ["Python", "Django REST Framework", "Celery", "Redis", "PostgreSQL", "Docker"],
     capabilities: [
-      "Route-based room navigation with locally persisted project-chest progress.",
-      "Project chest tabs with source-backed implementation details.",
-      "Crafting grid that maps skills to matching projects.",
-      "Minecart milestone track and portal contact surface."
+      "Authenticated endpoint and event creation with per-user ownership.",
+      "SHA-256 HMAC signatures on deterministic JSON payloads.",
+      "Asynchronous webhook delivery with exponential-backoff retries.",
+      "Dead-letter status, attempt history, and a delivery dashboard."
     ],
     evidence: [
-      "The app uses local assets from the repository plus generated environment plates.",
-      "Older route files are preserved in the tree while the new archive becomes the active surface."
+      "The delivery service records response codes, bodies, attempt counts, and individual DeliveryAttempt rows.",
+      "The repository includes Docker Compose locally and separate Railway web, worker, PostgreSQL, and Redis production services."
     ],
     tradeoffs: [
-      "Legacy portfolio pages remain in the source tree, while the World Archive is the active routed experience."
+      "Retries stop after five attempts; the dashboard reports aggregate state rather than offering a full delivery-inspection UI."
     ],
-    githubUrl: "https://github.com/Harshpreet1729/Minecraft-based-Portfolio",
+    githubUrl: "https://github.com/Harshpreet1729/Endpoint",
   },
 ];
 
 export const craftIngredients: CraftIngredient[] = [
-  { id: "python", name: "Python", icon: "potion", projectIds: ["leetmentor", "prescription", "self-pruning", "vaani"] },
-  { id: "typescript", name: "TypeScript", icon: "writtenBook", projectIds: ["leetmentor", "blindcoder", "world-archive"] },
-  { id: "django", name: "Django", icon: "diamondPickaxe", projectIds: ["leetmentor", "writeyourown", "vaani"] },
+  { id: "python", name: "Python", icon: "potion", projectIds: ["leetmentor", "prescription", "self-pruning", "vaani", "endpoint"] },
+  { id: "typescript", name: "TypeScript", icon: "writtenBook", projectIds: ["leetmentor", "blindcoder"] },
+  { id: "django", name: "Django", icon: "diamondPickaxe", projectIds: ["leetmentor", "writeyourown", "vaani", "endpoint"] },
   { id: "accessibility", name: "Accessibility", icon: "diamondSword", projectIds: ["blindcoder"] },
   { id: "machine-learning", name: "ML", icon: "experienceBottle", projectIds: ["prescription", "self-pruning", "emotion-music"] },
   { id: "cpp", name: "C++", icon: "ironSword", projectIds: ["textforge"] },
-  { id: "browser", name: "Browser UI", icon: "map", projectIds: ["emotion-music", "budget-tracker", "world-archive"] },
-  { id: "systems", name: "Systems", icon: "redstone", projectIds: ["textforge", "self-pruning"] },
-  { id: "deployment", name: "Deploy", icon: "chestMinecart", projectIds: ["leetmentor", "writeyourown", "world-archive"] },
+  { id: "browser", name: "Browser UI", icon: "map", projectIds: ["emotion-music", "budget-tracker"] },
+  { id: "systems", name: "Systems", icon: "redstone", projectIds: ["textforge", "self-pruning", "endpoint"] },
+  { id: "deployment", name: "Deploy", icon: "chestMinecart", projectIds: ["leetmentor", "writeyourown", "endpoint"] },
 ];
 
 export const milestones: Milestone[] = [
@@ -390,7 +390,7 @@ export const milestones: Milestone[] = [
     title: "Django Product Work",
     biome: "Enchanted library",
     detail: "Authenticated web workspaces with ownership, search, templates, deployment config, and API boundaries.",
-    projectIds: ["writeyourown", "leetmentor", "vaani"],
+    projectIds: ["writeyourown", "leetmentor", "vaani", "endpoint"],
   },
   {
     id: "applied-ai",
@@ -407,11 +407,11 @@ export const milestones: Milestone[] = [
     projectIds: ["blindcoder"],
   },
   {
-    id: "world-archive",
-    title: "World Archive",
-    biome: "Mountain base",
-    detail: "A source-backed portfolio that turns every repository into a Minecraft-style object with a usable chest of details.",
-    projectIds: ["world-archive"],
+    id: "webhook-infrastructure",
+    title: "Webhook Infrastructure",
+    biome: "Redstone dispatch station",
+    detail: "Signed event delivery with Celery workers, Redis queues, exponential retries, attempt history, and dead-letter handling.",
+    projectIds: ["endpoint"],
   },
 ];
 
